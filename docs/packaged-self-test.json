@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "device": "cpu",
+  "classifier": {
+    "label": "SAFE",
+    "score": 0.00018966587958857417
+  },
+  "ingestion": {
+    "source": "securerag-packaged-2guolyma\\sample.txt",
+    "status": "SAFE",
+    "indexed_chunks": 1,
+    "quarantined_chunks": 0
+  },
+  "retrieved": 1,
+  "frontend_loaded": true
+}

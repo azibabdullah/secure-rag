@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "device": "cpu",
+  "classifier": {
+    "label": "SAFE",
+    "score": 0.00018966587958857417
+  },
+  "ingestion": {
+    "source": "securerag-packaged-u48jgd8c\\sample.txt",
+    "status": "SAFE",
+    "indexed_chunks": 1,
+    "quarantined_chunks": 0,
+    "approved_chunks": 1,
+    "deferred_chunks": 0,
+    "screened_on_upload": true,
+    "threshold": 0.5
+  },
+  "retrieved": 1,
+  "frontend_loaded": true
+}
