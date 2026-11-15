@@ -211,7 +211,7 @@ Found a vulnerability? Please follow [SECURITY.md](SECURITY.md).
 
 | | |
 |---|---|
-| **Developers** | M. Abdullah Azib · Muhammad Abdullah Masood |
+| **Developer** | M. Abdullah Azib |
 | **Supervisor** | Ms. Sabina Akhtar |
 | **Co-supervisor** | Dr. Arshad Farhad |
 | **Institution** | Bahria University Islamabad, Department of Computer Science |
