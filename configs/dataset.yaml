@@ -1,0 +1,106 @@
+dataset:
+  name: securerag_security_classifier
+  labels:
+    benign: 0
+    malicious: 1
+
+  train_sources:
+    prompt_injection:
+      hf_name: "hlyn/prompt-injection-judge-deberta-dataset"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "direct_injection"
+      oversample_factor: 1.0
+
+    indirect_injection:
+      hf_name: "MAlmasabi/Indirect-Prompt-Injection-BIPIA-GPT"
+      text_column: "context"
+      label_column: "label"
+      attack_type_default: "indirect_injection"
+      oversample_factor: 2.0
+
+    hard_negatives:
+      # CONFIRMED: this is the exact file behind the 78.37% F1 result.
+      # Recovered and verified via row-count + content match on 2026-09-14.
+      # DO NOT change this path without re-running the recovery verification.
+      local_path: "data/hard_negatives/final_v2.jsonl"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "hard_negative"
+      oversample_factor: 1.0
+
+    hard_positives:
+      # CONFIRMED: paired with final_v2.jsonl above for the 78.37% F1 result.
+      local_path: "data/hard_positives/pilot_v1.jsonl"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "hard_positive"
+      oversample_factor: 1.0
+
+    piguard_curated:
+      # NEW - the single variable being tested in this experiment (E-PIGuard).
+      # Built by scripts/build_piguard_curated.py from 8 audited PIGuard
+      # sub-sources. Internally skewed toward malicious (86.5%/13.5%) by
+      # design - this addition's purpose is malicious-class diversity from
+      # real-world attack sources, not over-defense correction (already
+      # handled by hard_negatives/hard_positives above). At ~2.3% of the
+      # total training pool, this skew does not meaningfully shift overall
+      # dataset balance.
+      local_path: "data/piguard_curated/piguard_curated_v1.jsonl"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "piguard_diversity"
+      oversample_factor: 1.0
+
+    authz_hard_positives:
+      # Sprint 4 targeted correction (the single tested variable this run):
+      # fabricated-authorization-in-artifact + direct role-claim attacks -
+      # the model's remaining weakness (approval_authority_escalation).
+      # 200 rows (132 distinct). Paired with authz_hard_negatives v2 below at
+      # ~1:3 distinct attack:benign. Leakage-checked CLEAN against Agentic-5K /
+      # NotInject / xtest / the 3,000 set before training.
+      local_path: "data/hard_positives/hard_positives_authz_v1.jsonl"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "approval_authority_escalation"
+      oversample_factor: 1.0
+
+    authz_hard_negatives:
+      # Benign counterparts: same authority/role/artifact vocabulary, NO
+      # control bypass (real tool results, config comments, calendar invites,
+      # KB articles, legitimate role requests). Prevents the model learning
+      # "authority language = malicious".
+      # v2 (final run, authz-v2): v1 over-corrected (NotInject FPR 18.9% ->
+      # 24.8%) because v1 benign was effectively only 116 distinct rows vs 132
+      # distinct attacks. v2 = 116 distinct v1 rows + 280 new distinct rows
+      # across 6 categories (security discussion, quoted-attack analysis,
+      # policy text, real documents with genuine approvals, legit admin
+      # requests, benign tool outputs) = 396 distinct, ~3:1 vs attacks.
+      local_path: "data/hard_negatives/hard_negatives_authz_v2.jsonl"
+      text_column: "text"
+      label_column: "label"
+      attack_type_default: "hard_negative_authz"
+      oversample_factor: 1.0
+
+  held_out_sources:
+    agentic_5k:
+      hf_name: "3nesdeniz/agentic-prompt-injection-5k"
+      text_column: "text"
+      label_column: "label"
+    # NotInject and xtest are loaded/evaluated separately via
+    # scripts/eval_notinject.py and an equivalent xtest eval script -
+    # they are NOT mixed into training data preparation.
+
+  splits:
+    train: 0.8
+    validation: 0.1
+    test: 0.1
+
+  preprocessing:
+    remove_duplicates: true
+    remove_empty: true
+    min_text_length: 3
+    max_text_length_chars: 80000
+    max_token_length: 512
+
+  random_seed: 42
