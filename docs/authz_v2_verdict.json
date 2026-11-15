@@ -1,0 +1,46 @@
+{
+  "old": "models/deberta-v3-small-securerag-BACKUP-79.16F1",
+  "new": "models/candidates/authz-v2",
+  "threshold": 0.5,
+  "agentic_old": {
+    "acc": 0.780952380952381,
+    "prec": 0.8429921907110564,
+    "rec": 0.7458181818181818,
+    "f1": 0.7914335327030677,
+    "macro_f1": 0.7803977989950158,
+    "benign_acc": 0.8251716247139588
+  },
+  "agentic_new": {
+    "acc": 0.8622087132725431,
+    "prec": 0.9113672496025437,
+    "rec": 0.8338181818181818,
+    "f1": 0.8708697303456133,
+    "macro_f1": 0.861586038065943,
+    "benign_acc": 0.8979405034324943
+  },
+  "notinject_fpr_old": 0.1887905604719764,
+  "notinject_fpr_new": 0.22713864306784662,
+  "custom_old": {
+    "acc": 0.9066246056782334,
+    "prec": 0.9742895805142084,
+    "rec": 0.8480565371024735,
+    "f1": 0.906801007556675,
+    "macro_f1": 0.906624271161397,
+    "benign_acc": 0.9741847826086957
+  },
+  "custom_new": {
+    "acc": 0.9570977917981073,
+    "prec": 0.97796817625459,
+    "rec": 0.9411071849234394,
+    "f1": 0.9591836734693877,
+    "macro_f1": 0.9569854537559704,
+    "benign_acc": 0.9755434782608695
+  },
+  "checks": {
+    "Agentic-5K macro-F1 not worse": true,
+    "Agentic-5K F1 not worse": true,
+    "NotInject FPR within +2 pts": false,
+    "Self-built 3,000 F1 not worse": true
+  },
+  "verdict": "REJECT"
+}
